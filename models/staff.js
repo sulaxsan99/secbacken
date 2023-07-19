@@ -16,6 +16,7 @@ const StaffSchema = new mongoose.Schema({
         required: [true, 'Please enter LastName']
     },
     nic: {
+        
         type: String,
         required: [true, 'Please enter nic'],
         unique:true

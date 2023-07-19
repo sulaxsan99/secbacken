@@ -68,15 +68,15 @@ router.get("/one/:StaffID",async(req,res)=>{
       return res.status(400).json(error)
   }
   })
-router.put('/update/:StaffID', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     try {
   
-        const Onevistor = await staffSchema.findOne({StaffID:req.params.StaffID})
+        const Onevistor = await staffSchema.findById(req.params.id)
         if(!Onevistor) {
             return res.status(200).json("Staff not found")
         }
         const   StaffID =req.params.StaffID
-        const updateEmp = await staffSchema.findOneAndUpdate({StaffID},{$set: req.body},{ new: true });
+        const updateEmp = await staffSchema.findByIdAndUpdate(req.params.id,req.body,{ new: true });
         res.status(200).json({ message:"Staff updated successfully", updateEmp});
     } catch (error) {
         console.log(error);
@@ -86,18 +86,18 @@ router.put('/update/:StaffID', async (req, res) => {
 });
 
 
-router.delete('/delete/:StaffID',async(req,res)=>{
+router.delete('/delete/:id',async(req,res)=>{
 try {
-    const deleteStaff= await staffSchema.findOne({StaffID:req.params.StaffID});
+    const deleteStaff= await staffSchema.findById(req.params.id);
     if(!deleteStaff) {
         return res.status(200).json("Staff not found")
     }
 
-    const dvis= await staffSchema.findOneAndRemove({StaffID:req.params.StaffID})
+    const dvis= await staffSchema.findByIdAndDelete(req.params.id)
     res.status(200).json({ message:"Staff delete successfully", dvis});
 
 } catch (error) {
-    res.status(400).json({ error: 'product not deleted ' });
+    res.status(400).json({ error: 'staff not deleted ' });
 
 }
 })

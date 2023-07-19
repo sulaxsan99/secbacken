@@ -68,37 +68,39 @@ router.get("/one/:SID",async(req,res)=>{
       return res.status(400).json(error)
   }
   })
-router.put('/update/:SID', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     try {
   
-        const Onev = await studentSchema.findOne({SID:req.params.SID})
+        const Onev = await studentSchema.findById(req.params.id);
         if(!Onev) {
-            return res.status(200).json("visitor not found")
+            return res.status(200).json("student not found")
         }
         const   SID =req.params.SID
-        const updateEmp = await studentSchema.findOneAndUpdate({SID},{$set: req.body},{ new: true });
-        res.status(200).json({ message:"visitor updated successfully", updateEmp});
+        const updateEmp = await studentSchema.findByIdAndUpdate(req.params.id,req.body,{ new: true });
+        res.status(200).json({ message:"student updated successfully", updateEmp});
     } catch (error) {
         console.log(error);
-        res.status(400).json({ error: 'An error occurred while updating the visitor.' });
+        res.status(400).json({ error: 'An error occurred while updating the student.' });
     }
 
 });
 
 
-router.delete('/delete/:SID',async(req,res)=>{
+router.delete('/delete/:id',async(req,res)=>{
 try {
-    const deletestudent= await studentSchema.findOne({SID:req.params.SID});
+    const deletestudent= await studentSchema.findById(req.params.id);
     if(!deletestudent) {
-        return res.status(200).json("visitor not found")
+        return res.status(200).json("student not found")
     }
 
-    const dvis= await studentSchema.findOneAndRemove({SID:req.params.SID})
-    res.status(200).json({ message:"visitor delete successfully", dvis});
+    const dvis= await studentSchema.findByIdAndDelete(req.params.id)
+    res.status(200).json({ message:"student delete successfully", dvis});
 
 } catch (error) {
-    res.status(400).json({ error: 'product not deleted ' });
+    res.status(400).json({ error: 'student not deleted ' });
 
 }
+
+
 })
 module.exports=router;

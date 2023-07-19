@@ -84,5 +84,18 @@ router.post("/register", async (req, res) => {
       res.status(500).json(err);
     }
   });
-  
+    router.get("/one/:email",async(req,res)=>{
+      try {
+          const security = await securitySchema.findOne({email:req.params.email})
+          if(!security){
+              return res.status(200).json("no security data available")
+      
+          }else{
+            return res.status(200).json({security})
+      
+          }
+      } catch (error) {
+          return res.status(400).json(error)
+      }
+      })
   module.exports=router;

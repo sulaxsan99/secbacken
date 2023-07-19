@@ -54,9 +54,9 @@ try {
     return res.status(200).json({error})
 }
 })
-router.get("/one/:visitorID",async(req,res)=>{
+router.get("/one/:id",async(req,res)=>{
   try {
-      const visitor = await visitorSchema.findOne({visitorID:req.params.visitorID});
+      const visitor = await visitorSchema.findById(req.params.id)
       if(!visitor){
           return res.status(200).json("no visitor data available")
   
@@ -68,15 +68,15 @@ router.get("/one/:visitorID",async(req,res)=>{
       return res.status(400).json(error)
   }
   })
-router.put('/update/:visitorID', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     try {
   
-        const Onevistor = await visitorSchema.findOne({visitorID:req.params.visitorID})
+        const Onevistor = await visitorSchema.findById(req.params.id)
         if(!Onevistor) {
             return res.status(200).json("visitor not found")
         }
         const   visitorID =req.params.visitorID
-        const updateEmp = await visitorSchema.findOneAndUpdate({visitorID},{$set: req.body},{ new: true });
+        const updateEmp = await visitorSchema.findByIdAndUpdate(req.params.id,req.body,{ new: true });
         res.status(200).json({ message:"visitor updated successfully", updateEmp});
     } catch (error) {
         console.log(error);
@@ -86,18 +86,19 @@ router.put('/update/:visitorID', async (req, res) => {
 });
 
 
-router.delete('/delete/:visitorID',async(req,res)=>{
+router.delete('/delete/:id',async(req,res)=>{
 try {
-    const deletevisitor= await visitorSchema.findOne({visitorID:req.params.visitorID});
+    const deletevisitor= await visitorSchema.findById(req.params.id);
     if(!deletevisitor) {
         return res.status(200).json("visitor not found")
     }
 
-    const dvis= await visitorSchema.findOneAndRemove({visitorID:req.params.visitorID})
+    const dvis= await visitorSchema.findByIdAndDelete(req.params.id)
     res.status(200).json({ message:"visitor delete successfully", dvis});
 
 } catch (error) {
-    res.status(400).json({ error: 'product not deleted ' });
+    res.status(400).json({ error: 'product not deleted ', });
+    console.log(error)
 
 }
 })
