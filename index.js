@@ -22,7 +22,7 @@ app.use('/api/v1',visitor)
 app.use('/api/v2',student)
 app.use('/api/v3',staff)
 app.use('/api/v4',schedule)
-app.listen(5000 ||  process.env.PORT , () => {
+app.listen(5001 ||  process.env.PORT , () => {
     console.log(`Port listen in ${process.env.PORT}`);
 });
 
